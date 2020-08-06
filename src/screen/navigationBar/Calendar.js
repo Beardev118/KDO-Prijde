@@ -1,6 +1,15 @@
 import 'react-native-gesture-handler';
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, Button, ScrollView} from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  Button,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 
 const styles = StyleSheet.create({
   headerRightContainer: {
@@ -19,7 +28,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
   },
-  svContainer: {
+  flContainer: {
     marginLeft: 5,
     marginTop: 10,
     marginRight: 5,
@@ -31,8 +40,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginRight: 10,
     marginBottom: 5,
-    // borderBottomColor: 'black',
-    // borderBottomWidth: 1,
   },
   eName: {
     flex: 0.6,
@@ -76,7 +83,26 @@ const styles = StyleSheet.create({
   },
 });
 
+const Item = ({item, onPress, style}) => (
+  <TouchableOpacity
+    onPress={onPress}
+    style={{borderBottomColor: 'black', borderBottomWidth: 1}}>
+    <View key={item.key} style={styles.item}>
+      <View style={styles.subContainer}>
+        <Text style={styles.eName}>{item.eventName}</Text>
+        <Text style={styles.eBadge}>{item.eventBadge}</Text>
+        <Text style={styles.eNote}>{item.eventNote}</Text>
+      </View>
+      <View style={styles.subContainer}>
+        <Text style={styles.eDate}>{item.eventDate}</Text>
+        <Text style={styles.eCnt}>{item.eventCnt}</Text>
+      </View>
+    </View>
+  </TouchableOpacity>
+);
+
 function Calendar({navigation}) {
+  const [selectedId, setSelectedId] = useState(null);
   const [classes, setClasses] = useState([
     {
       eventName: 'test 01',
@@ -249,28 +275,26 @@ function Calendar({navigation}) {
     },
   ]);
 
+  const renderItem = ({item}) => {
+    return (
+      <Item
+        item={item}
+        onPress={() => console.log(item.key)}
+        style={styles.item}
+      />
+    );
+  };
+
   return (
-    <View style={styles.container}>
-      <ScrollView style={styles.svContainer}>
-        {classes.map(item => {
-          return (
-            <View style={{borderBottomColor: 'black', borderBottomWidth: 1}}>
-              <View key={item.key} style={styles.item}>
-                <View style={styles.subContainer}>
-                  <Text style={styles.eName}>{item.eventName}</Text>
-                  <Text style={styles.eBadge}>{item.eventBadge}</Text>
-                  <Text style={styles.eNote}>{item.eventNote}</Text>
-                </View>
-                <View style={styles.subContainer}>
-                  <Text style={styles.eDate}>{item.eventDate}</Text>
-                  <Text style={styles.eCnt}>{item.eventCnt}</Text>
-                </View>
-              </View>
-            </View>
-          );
-        })}
-      </ScrollView>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={classes}
+        renderItem={renderItem}
+        keyExtractor={item => item.key}
+        extraData={selectedId}
+        style={styles.flContainer}
+      />
+    </SafeAreaView>
   );
 }
 
