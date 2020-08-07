@@ -6,6 +6,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {IconButton, Colors} from 'react-native-paper';
 
 import Calendar from './Calendar';
+import Event from './Event';
 
 const styles = StyleSheet.create({
   headerRightContainer: {
@@ -50,15 +51,20 @@ function NavBar() {
         <Stack.Screen
           name="Home"
           component={Calendar}
-          options={navigationOptions}
+          options={navCalendarOptions}
         />
         <Stack.Screen name="Details" component={DetailsScreen} />
+        <Stack.Screen
+          name="Event"
+          component={Event}
+          options={navEventOptions}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-const navigationOptions = ({navigation}) => {
+const navCalendarOptions = ({navigation}) => {
   return {
     title: 'Kalendář',
     headerRight: () => (
@@ -67,8 +73,24 @@ const navigationOptions = ({navigation}) => {
           icon="plus-circle-outline"
           color={Colors.white}
           size={28}
+          onPress={() => navigation.navigate('Event')}
+        />
+        <IconButton
+          icon="dots-vertical"
+          color={Colors.white}
+          size={24}
           onPress={() => navigation.navigate('Details')}
         />
+      </View>
+    ),
+  };
+};
+
+const navEventOptions = ({navigation}) => {
+  return {
+    title: 'Událost',
+    headerRight: () => (
+      <View style={styles.headerRightContainer}>
         <IconButton
           icon="dots-vertical"
           color={Colors.white}
