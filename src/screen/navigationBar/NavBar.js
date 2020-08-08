@@ -7,6 +7,8 @@ import {IconButton, Colors} from 'react-native-paper';
 
 import Calendar from './Calendar';
 import Event from './Event';
+import EventManager from './EventManager';
+import Subject from './Subject';
 
 const styles = StyleSheet.create({
   headerRightContainer: {
@@ -59,6 +61,20 @@ function NavBar() {
           component={Event}
           options={navEventOptions}
         />
+        <Stack.Screen
+          name="EventManager"
+          component={EventManager}
+          options={{
+            title: 'Editor Akcí',
+          }}
+        />
+        <Stack.Screen
+          name="Subject"
+          component={Subject}
+          options={{
+            title: 'Nová Skupina',
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -73,13 +89,13 @@ const navCalendarOptions = ({navigation}) => {
           icon="plus-circle-outline"
           color={Colors.white}
           size={28}
-          onPress={() => navigation.navigate('Event')}
+          onPress={() => navigation.navigate('EventManager')}
         />
         <IconButton
           icon="dots-vertical"
           color={Colors.white}
           size={24}
-          onPress={() => navigation.navigate('Details')}
+          onPress={() => navigation.navigate('Subject')}
         />
       </View>
     ),
